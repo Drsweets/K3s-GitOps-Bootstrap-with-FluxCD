@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-ingress
+  namespace: demo-web
+spec:
+  # Without ingressClassName set, this Ingress relies on there being
+  # exactly one IngressClass marked as default. With two Traefik
+  # installs on K3s (see note in helmrelease-traefik.yaml) that's
+  # ambiguous, so pin it explicitly.
+  ingressClassName: traefik
+  rules:
+    - host: whoami.homelab.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80

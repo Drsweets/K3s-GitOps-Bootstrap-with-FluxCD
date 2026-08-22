@@ -1,0 +1,19 @@
+# Update the address range below to match a free block on YOUR LAN
+# that is NOT handed out by your router's DHCP server.
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.1.200-192.168.1.220
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - default-pool

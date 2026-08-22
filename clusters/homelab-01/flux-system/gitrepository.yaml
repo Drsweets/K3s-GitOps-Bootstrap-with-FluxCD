@@ -1,0 +1,16 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: k3s-gitops-bootstrap
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  url: https://github.com/<YOUR_GITHUB_USER>/k3s-gitops-bootstrap.git
+  ref:
+    branch: main
+  # NOTE: secretRef is only needed for PRIVATE repositories (SSH deploy key
+  # or PAT stored as a Kubernetes secret named "flux-system"). If your repo
+  # is public, delete the secretRef block below entirely - a GitRepository
+  # pointing at a secret that doesn't exist will fail to reconcile.
+  # secretRef:
+  #   name: flux-system

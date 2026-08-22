@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: metallb
+  namespace: metallb-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: metallb
+      version: "0.14.8"
+      sourceRef:
+        kind: HelmRepository
+        name: metallb
+        namespace: flux-system
+  install:
+    createNamespace: true
+  # IMPORTANT: the IPAddressPool/L2Advertisement CRDs below are only
+  # created once this HelmRelease has successfully installed. If Flux
+  # applies ipaddresspool.yaml before the CRDs exist, it will fail and
+  # retry on the next reconciliation (interval above) until it succeeds -
+  # this is expected on first bootstrap and self-heals.

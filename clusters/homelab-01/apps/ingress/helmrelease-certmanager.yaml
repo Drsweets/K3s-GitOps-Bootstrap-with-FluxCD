@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: cert-manager
+      # Unlike most charts, cert-manager's chart version keeps the "v"
+      # prefix (matches the app version) - verify the latest at
+      # https://artifacthub.io/packages/helm/cert-manager/cert-manager
+      version: "v1.16.2"
+      sourceRef:
+        kind: HelmRepository
+        name: cert-manager
+        namespace: flux-system
+  install:
+    createNamespace: true
+  values:
+    # Without this, the cert-manager CRDs (Certificate, ClusterIssuer,
+    # Issuer, etc.) are never installed and every cert-manager resource
+    # you create afterward will fail with "no matches for kind".
+    crds:
+      enabled: true
